@@ -1,0 +1,18 @@
+{
+    "extends": "google",
+    "rules": {
+        "indent": ["warn", 4],
+        "rules": {
+            "eqeqeq": [2, "allow-null"]
+        },
+        "parserOptions": {
+            "ecmaVersion": 6,
+            "sourceType": "module",
+            "ecmaFeatures": {
+                "jsx": true,
+                "modules": true,
+                "experimentalObjectRestSpread": true
+            }
+        }
+    }
+}
