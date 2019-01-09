@@ -24,19 +24,19 @@ server.listen(port, function listen() {
 io.on('connection', function listener(socket) {
     console.log('New user connected!');
 
-    socket.emit('newMessage', {
-        from: `Jhon`,
-        text: `C ya then!`,
-        createdAt: new Date(),
+
+    socket.on('createMessage', function createNewMessage({from, text}) {
+        console.log(`New Message: `, JSON.stringify({from, text}, undefined, 2));
+
+        io.emit(`newMessage`, {
+            from: from,
+            text: text,
+            createdAt: new Date().getTime(),
+        });
     });
 
     socket.on('disconnect', function disconnect() {
         console.log(`Client disconnected!`);
-    });
-
-    socket.on('createMessage', function createNewMessage(newMessage) {
-        newMessage.createdAt = new Date();
-        console.log(`New Message: `, JSON.stringify(newMessage, undefined, 2));
     });
 });
 
