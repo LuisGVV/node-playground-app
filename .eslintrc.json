@@ -3,7 +3,8 @@
     "rules": {
         "indent": ["warn", 4],
         "rules": {
-            "eqeqeq": [2, "allow-null"]
+            "eqeqeq": [2, "allow-null"],
+            "quotes": ["error" ,"double"]
         },
         "parserOptions": {
             "ecmaVersion": 6,

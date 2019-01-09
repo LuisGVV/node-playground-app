@@ -39,9 +39,8 @@ A simple express app
 
 ### Tests:
 
-I've found the mocha + chai libraries to be useful, easy to understand and configure. Writing your own tests will save you lots of time by avoiding the setup of scenario setups, loading browser, ensuring the data describes the use case. All of the previous over and over again which can become painful.
+I've found the mocha + chai libraries to be easy to understand and setup.
 
-Get to know your testing suite and learn the test facilities provided by the framework you're using and your development speed will increase for sure.
+Writing your own tests will avoiding hassle of scenario setups, loading browser, ensuring the data describes the use case or bug to repair. Doing the same over and over can become painful, specially in cases where manually setting the scenario takes long.
 
-
-
+Get to know your testing suite and learn the test utilities provided by the framework you're using and your development speed will increase for sure.
