@@ -29,11 +29,11 @@ io.on('connection', function listener(socket) {
 
     socket.emit('establishedConnection', generateMsg(`Admin`, `Welcome to the chat room!`));
 
-    socket.broadcast.emit('newUserJoined', generateMsg(`Admin`, `New user joined`));
+    socket.broadcast.emit('newMessage', generateMsg(`Admin`, `New user joined`));
 
-    socket.on('createMessage', function createNewMessage({ from, text }) {
+    socket.on('createMessage', function createNewMessage({ from, text }, acknowledge) {
         console.log(`New Message: `, JSON.stringify({ from, text }, undefined, 2));
-
+        acknowledge('This parameter is set from the server and can be anything'); // this will call the provided callback in the front-end code
         socket.broadcast.emit(`newMessage`, generateMsg(from, text));
     });
 
