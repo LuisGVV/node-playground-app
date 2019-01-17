@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 
 const publicPath = path.join(__dirname, '../public');
 
-const { generateMsg } = require('./utils/message');
+const { generateMsg, generateLocationMsg } = require('./utils/message');
 
 const app = express();
 const server = http.createServer(app);
@@ -35,6 +35,11 @@ io.on('connection', function listener(socket) {
         console.log(`New Message: `, JSON.stringify({ from, text }, undefined, 2));
         acknowledge('This parameter is set from the server and can be anything'); // this will call the provided callback in the front-end code
         socket.broadcast.emit(`newMessage`, generateMsg(from, text));
+    });
+
+    socket.on('sendLocation', function sendLocation({ latitude, longitude }, _acknowledge) {
+        console.log(`New Message: `, JSON.stringify({ latitude, longitude }, undefined, 2));
+        socket.broadcast.emit(`newLocationMessage`, generateLocationMsg(`Admin`, { latitude, longitude }));
     });
 
     socket.on('disconnect', function disconnect() {
