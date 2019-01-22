@@ -1,0 +1,13 @@
+nav {
+    height: 100vh;
+}
+
+main {
+    height: 100vh;
+
+}
+
+.messages-container {
+    height: calc(100vh - 50px);
+    list-style-type: none;
+}

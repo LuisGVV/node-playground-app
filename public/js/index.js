@@ -35,17 +35,20 @@ socket.on('newLocationMessage', function newLocationMessage(message) {
 $("#message-form").on("submit", function onSubmit(event) {
     event.preventDefault();
 
-    var text = $("[name=message]").val();
+    var textInput = $("[name=message]"),
+        text = textInput.val();
 
-    socket.emit('createMessage',
-        {
-            from: 'Frank',
-            text,
-        },
-        function acknowledgeCreateMessage(data) {
-            console.log(data);
-        }
-    );
+    if(text.trim() !== "") {
+        socket.emit('createMessage',
+            {
+                from: 'Frank',
+                text,
+            },
+            function acknowledgeCreateMessage(_data) {
+                textInput.val("");
+            }
+        );
+    }
 });
 
 var locationButton = $("#send-location");
@@ -55,8 +58,11 @@ locationButton.on("click", function onClick(_event) {
         return alert("Geolocation not supported by your browser");
     }
 
+    locationButton.attr("disabled", "disabled").text("Sending...");;
+
     navigator.geolocation.getCurrentPosition(
         function success({ coords: { latitude, longitude } }) {
+            locationButton.removeAttr("disabled").text("Send location");
             socket.emit('sendLocation',
                 {
                     latitude,
@@ -68,6 +74,7 @@ locationButton.on("click", function onClick(_event) {
             );
         },
         function error() {
+            locationButton.removeAttr("disabled").text("Send location");
             alert("Unable to prompt location");
         }
     );
