@@ -13,35 +13,46 @@ socket.on('establishedConnection', function establishedConnection({ from, text }
 });
 
 socket.on('newMessage', function newMessage(message) {
-    console.log(`New Message received:`, JSON.stringify(message, undefined, 2));
-    var li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
-    $("#messages").append(li);
+    var template = $("#message-template").html(),
+        formattedTime = moment(message.createdAt).format('h:mm a'),
+        html = Mustache.render(
+            template,
+            {
+                text: message.text,
+                from: message.from,
+                createdAt: formattedTime,
+            }
+        );
+
+    $("#messages").append(html);
 });
 
 socket.on('newLocationMessage', function newLocationMessage(message) {
-    console.log(`New Message received:`, JSON.stringify(message, undefined, 2));
-    var li = $('<li></li>'),
-        a = $('<a target="_blank">My current location</a>');
-        
-    li.text(`${message.from}: `);
-    a.attr('href', message.url);
+    var template = $("#location-message-template").html(),
+        formattedTime = moment(message.createdAt).format('h:mm a'),
+        html = Mustache.render(
+            template,
+            {
+                from: message.from,
+                createdAt: formattedTime,
+                url: message.url,
+            }
+        );
 
-    li.append(a);
-
-    $("#messages").append(li);
+    $("#messages").append(html);
 });
 
 $("#message-form").on("submit", function onSubmit(event) {
     event.preventDefault();
 
-    var textInput = $("[name=message]"),
+    var user = 'User',
+        textInput = $("[name=message]"),
         text = textInput.val();
 
     if(text.trim() !== "") {
         socket.emit('createMessage',
             {
-                from: 'Frank',
+                from: user,
                 text,
             },
             function acknowledgeCreateMessage(_data) {
