@@ -1,11 +1,20 @@
 const socket = io();
 
 socket.on('connect', function connect() {
-    console.log(`Connected to server!`);
+    var params = window.utils.deparam(window.location.search);
+
+    socket.emit("join", params, function acknowledge(error) {
+        if(error) {
+            alert(error);
+            window.location.href = '/';
+        } else {
+            // alert("All good!");
+        }
+    });
 });
 
 socket.on('disconnect', function disconnect() {
-    console.log(`Disconnected from server!`);
+    console.log(`Disconnected from server at ${moment().format('h:mm a')}`);
 });
 
 socket.on('establishedConnection', function establishedConnection({ from, text }) {
@@ -25,7 +34,18 @@ socket.on('newMessage', function newMessage(message) {
         );
 
     $("#messages").append(html);
+    scrollMessagesContainerToBottom();
 });
+
+socket.on("updateUserList", function updateUserList(users) {
+    var ol = $("<ol></ol>");
+    console.log(users);
+    users.forEach(user => {
+        ol.append($("<li></li>").text(user));
+    });
+
+    $("#users").html(ol);
+})
 
 socket.on('newLocationMessage', function newLocationMessage(message) {
     var template = $("#location-message-template").html(),
@@ -40,19 +60,20 @@ socket.on('newLocationMessage', function newLocationMessage(message) {
         );
 
     $("#messages").append(html);
+    scrollMessagesContainerToBottom();
 });
 
 $("#message-form").on("submit", function onSubmit(event) {
     event.preventDefault();
 
-    var user = 'User',
+    var {username} = window.utils.deparam(window.location.search),
         textInput = $("[name=message]"),
         text = textInput.val();
 
     if(text.trim() !== "") {
         socket.emit('createMessage',
             {
-                from: user,
+                from: username,
                 text,
             },
             function acknowledgeCreateMessage(_data) {
@@ -90,3 +111,12 @@ locationButton.on("click", function onClick(_event) {
         }
     );
 });
+
+function scrollMessagesContainerToBottom() {
+    var messagesContainerHeight = $(".messages-container").height(),
+        messagesHeight = $("#messages").height();
+
+    if(messagesHeight > messagesContainerHeight) {
+        $(".messages-container").scrollTop(messagesHeight);
+    }
+}

@@ -1,71 +1,23 @@
 <!DOCTYPE html>
-
-<!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Node Playground App</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat - Join room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            A chat user
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <main role="main" class="col-md-9 col-lg-10 px-4">
-                <ul id="messages"
-                    class="messages-container list-group">
-                </ul>
-                <form class="form-inline chat-footer" action="" id="message-form">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <input class="form-control" type="text" name="message" placeholder="Type a message" autofocus autocomplete="off"/>
-                    </div>
-                    <button class="btn btn-primary mr-auto mb-2">Send</button>
-                    <button class="btn btn-primary mr-auto mb-2" id="send-location">Send Location</button>
-                </form>
-            </main>
-        </div>
-    </div>
-
-    <script id="message-template" type="text/template">
-        <li>
-            <strong>{{ from }}</strong><span> [{{ createdAt }}]</span>
-            <p>
-                {{ text }}
-            </p>
-        </li>
-    </script>
-
-    <script id="location-message-template" type="text/template">
-        <li>
-            <strong>{{ from }}</strong><span> [{{ createdAt }}]</span>
-            <p>
-                <a href="{{url}}" target="_blank">
-                    My location
-                </a>
-            </p>
-        </li>
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/mustache.min.js"></script>
-    <script src="/js/index.js"></script>
+<body class="text-center">
+    <form class="form-signin" action="/chat.html">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <input type="text" id="inputEmail" class="form-control" name="username" placeholder="Username" required="" autofocus="">
+        <input type="text" id="inputPassword" class="form-control" name="chatroom" placeholder="Chatroom" required="" autocomplete="off">
+        <button class="btn btn-lg btn-primary btn-block mt-3" type="submit">Join</button>
+    </form>
 </body>
 
 </html>

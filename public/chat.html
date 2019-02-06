@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Node Playground App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <h6>Users in room</h6>
+                    <ul id="users" class="nav flex-column">
+                    </ul>
+                </div>
+            </nav>
+            <main role="main" class="col-md-10 col-lg-10 px-4">
+                <div class="messages-container">
+                    <ul id="messages"
+                        class="list-group">
+                    </ul>
+                </div>
+                <form class="form-inline chat-footer" action="" id="message-form">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <input class="form-control" type="text" name="message" placeholder="Type a message" autofocus autocomplete="off"/>
+                    </div>
+                    <button class="btn btn-primary mr-auto mb-2">Send</button>
+                    <button class="btn btn-primary mr-auto mb-2" id="send-location">Send Location</button>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <script id="message-template" type="text/template">
+        <li>
+            <strong>{{ from }}</strong><span> [{{ createdAt }}]</span>
+            <p>
+                {{ text }}
+            </p>
+        </li>
+    </script>
+
+    <script id="location-message-template" type="text/template">
+        <li>
+            <strong>{{ from }}</strong><span> [{{ createdAt }}]</span>
+            <p>
+                <a href="{{url}}" target="_blank">
+                    My location
+                </a>
+            </p>
+        </li>
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/mustache.min.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+
+</html>

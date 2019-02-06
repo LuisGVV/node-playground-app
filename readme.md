@@ -37,6 +37,10 @@ Currently this repo contains:
 
 A simple express app
 
+### Socket.io
+
+A simple socket chat messaging chat app with a small front-end that uses JQuery + MustacheJS
+
 ### Tests:
 
 I've found the mocha + chai libraries to be easy to understand and setup.

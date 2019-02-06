@@ -9,5 +9,6 @@ main {
 
 .messages-container {
     height: calc(100vh - 50px);
+    overflow: scroll;
     list-style-type: none;
 }

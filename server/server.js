@@ -6,10 +6,14 @@ const socketIO = require('socket.io');
 const publicPath = path.join(__dirname, '../public');
 
 const { generateMsg, generateLocationMsg } = require('./utils/message');
+const { isValidString } = require('./utils/validators');
+const { Users } = require('./utils/users');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+
+var users = new Users();
 
 const bodyParser = require('body-parser');
 
@@ -24,12 +28,29 @@ server.listen(port, function listen() {
 });
 
 io.on('connection', function listener(socket) {
-    console.log('New user connected!');
 
+    socket.on("join", function onJoin(params, callback) {
+        if (!isValidString(params.username) || !isValidString(params.chatroom)) {
+            return callback("Invalid params");
+        }
 
-    socket.emit('establishedConnection', generateMsg(`Admin`, `Welcome to the chat room!`));
+        socket.join(params.chatroom);
+        users.removeUser(socket.id);
+        users.addUser(socket.id, params.username, params.chatroom);
 
-    socket.broadcast.emit('newMessage', generateMsg(`Admin`, `New user joined`));
+        io.to(params.chatroom).emit("updateUserList", users.getUserList(params.chatroom));
+        socket.emit('newMessage', generateMsg(`Admin`, `Welcome to the chat room!`));
+
+        socket.broadcast.to(params.chatroom).emit(
+            'newMessage',
+            generateMsg(
+                `Admin`,
+                `${params.username} has joined the room`
+            )
+        );
+
+        callback();
+    });
 
     socket.on('createMessage', function createNewMessage({ from, text }, acknowledge) {
         acknowledge('This parameter is set from the server and can be anything'); // this will call the provided callback in the front-end code
@@ -42,7 +63,13 @@ io.on('connection', function listener(socket) {
     });
 
     socket.on('disconnect', function disconnect() {
-        console.log(`Client disconnected!`);
+        var userRemoved = users.removeUser(socket.id);
+        console.log(`${userRemoved.name} disconnected`);
+        console.log(`user list: ${JSON.stringify(users.getUserList(), undefined, 2)}`);
+        if(userRemoved) {
+            io.to(userRemoved.room).emit("updateUserList", users.getUserList(userRemoved.room));
+            io.to(userRemoved.room).emit("newMessage", generateMsg("Admin", `${userRemoved.name} has left`));
+        }
     });
 });
 
