@@ -73,7 +73,6 @@ $("#message-form").on("submit", function onSubmit(event) {
     if(text.trim() !== "") {
         socket.emit('createMessage',
             {
-                from: username,
                 text,
             },
             function acknowledgeCreateMessage(_data) {
